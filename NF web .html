@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nahian Faruk</title>
+<meta name="description" content="Travel films and photos by Nahian Faruk.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-2: #121212;
+    --text: #ece8e1;
+    --muted: #8f8a82;
+    --accent: #c9a66b;
+    --line: rgba(236, 232, 225, 0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Film grain over everything */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain 1s steps(4) infinite;
+  }
+  @keyframes grain {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-3%, 2%); }
+    50% { transform: translate(2%, -3%); }
+    75% { transform: translate(-2%, -2%); }
+    100% { transform: translate(0, 0); }
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    z-index: 50;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.9), transparent);
+  }
+  nav .mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.3em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  nav .links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-left: 22px;
+    transition: color 0.3s;
+  }
+  nav .links a:hover { color: var(--accent); }
+
+  /* Hero with letterbox bars */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 560px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 16px;
+    background:
+      radial-gradient(ellipse at 50% 60%, rgba(201,166,107,0.14), transparent 60%),
+      radial-gradient(ellipse at 20% 20%, rgba(80,100,130,0.12), transparent 50%),
+      var(--bg);
+    overflow: hidden;
+  }
+  .hero::before, .hero::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    height: 9vh;
+    background: #000;
+    z-index: 2;
+  }
+  .hero::before { top: 0; }
+  .hero::after { bottom: 0; }
+
+  .hero .eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 1.4s 0.3s forwards;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(2.6rem, 11vw, 7.5rem);
+    letter-spacing: 0.18em;
+    line-height: 1;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 1.6s 0.6s forwards;
+  }
+  .hero .tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+    color: var(--muted);
+    margin-top: 22px;
+    opacity: 0;
+    animation: fadeUp 1.6s 1s forwards;
+  }
+  .scroll-cue {
+    position: absolute;
+    bottom: 13vh;
+    z-index: 3;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    opacity: 0;
+    animation: fadeUp 1.6s 1.6s forwards;
+  }
+  .scroll-cue::after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 40px;
+    margin: 12px auto 0;
+    background: linear-gradient(var(--accent), transparent);
+    animation: drip 2s infinite;
+  }
+  @keyframes drip {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Sections */
+  section { padding: 110px 16px; }
+  .wrap { max-width: 1150px; margin: 0 auto; }
+  .section-head { text-align: center; margin-bottom: 60px; }
+  .section-head .num {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--accent);
+  }
+  .section-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 10px;
+  }
+  .section-head p {
+    color: var(--muted);
+    max-width: 480px;
+    margin: 14px auto 0;
+    font-size: 0.95rem;
+  }
+  .rule {
+    width: 60px;
+    height: 1px;
+    background: var(--accent);
+    margin: 22px auto 0;
+  }
+
+  /* Instagram embeds */
+  .embeds {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 28px;
+  }
+  .embed-card {
+    width: 100%;
+    max-width: 340px;
+    border: 1px solid var(--line);
+    padding: 10px;
+    background: var(--bg-2);
+  }
+  .ig-frame {
+    display: block;
+    width: 100%;
+    height: 620px;
+    border: 0;
+    background: #fff;
+  }
+  .ig-link {
+    display: block;
+    text-align: center;
+    padding: 12px 0 4px;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  /* Photo grid (shows your own uploaded photos) */
+  .photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin-top: 50px;
+  }
+  .photos figure { overflow: hidden; background: var(--bg-2); }
+  .photos img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.85) contrast(1.05);
+    transition: transform 1.2s ease, filter 1.2s ease;
+  }
+  .photos figure:hover img { transform: scale(1.05); filter: saturate(1) contrast(1.1); }
+
+  /* Quote break */
+  .quote {
+    padding: 120px 16px;
+    text-align: center;
+    background: linear-gradient(180deg, var(--bg), #0f0d0a, var(--bg));
+  }
+  .quote p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.5rem, 5vw, 2.6rem);
+    max-width: 760px;
+    margin: 0 auto;
+    line-height: 1.35;
+  }
+
+  /* Contact */
+  .contact { text-align: center; }
+  .btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 16px 38px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    transition: background 0.4s, color 0.4s;
+  }
+  .btn:hover { background: var(--accent); color: var(--bg); }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 34px 16px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 1.2s ease, transform 1.2s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 560px) {
+    nav .links a { margin-left: 14px; font-size: 0.65rem; letter-spacing: 0.18em; }
+    section { padding: 80px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="mark" href="#top">NF</a>
+  <div class="links">
+    <a href="#films">Films</a>
+    <a href="#frames">Frames</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="eyebrow">Travel Films &amp; Photography</div>
+  <h1>Nahian Faruk</h1>
+  <div class="tagline">Places I have been. Moments I kept.</div>
+  <a class="scroll-cue" href="#films">Scroll</a>
+</header>
+
+<section id="films">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="num">01</div>
+      <h2>Films</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="embeds">
+      <div class="embed-card reveal">
+        <iframe class="ig-frame" src="https://www.instagram.com/reel/Dd_cLWVxLrJ/embed/" loading="lazy" allowtransparency="true" allowfullscreen scrolling="no" frameborder="0"></iframe>
+        <a class="ig-link" href="https://www.instagram.com/reel/Dd_cLWVxLrJ/" target="_blank" rel="noopener">Watch on Instagram</a>
+      </div>
+      <div class="embed-card reveal">
+        <iframe class="ig-frame" src="https://www.instagram.com/reel/DeHeC8Xx0SA/embed/" loading="lazy" allowtransparency="true" allowfullscreen scrolling="no" frameborder="0"></iframe>
+        <a class="ig-link" href="https://www.instagram.com/reel/DeHeC8Xx0SA/" target="_blank" rel="noopener">Watch on Instagram</a>
+      </div>
+      <div class="embed-card reveal">
+        <iframe class="ig-frame" src="https://www.instagram.com/reel/DWOoy36jfKE/embed/" loading="lazy" allowtransparency="true" allowfullscreen scrolling="no" frameborder="0"></iframe>
+        <a class="ig-link" href="https://www.instagram.com/reel/DWOoy36jfKE/" target="_blank" rel="noopener">Watch on Instagram</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="quote reveal">
+  <p>Every trip leaves something behind. These are the parts I brought home.</p>
+</div>
+
+<section id="frames">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="num">02</div>
+      <h2>Frames</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="embeds">
+      <div class="embed-card reveal">
+        <iframe class="ig-frame" src="https://www.instagram.com/p/DNso6p8Wpid/embed/" loading="lazy" allowtransparency="true" allowfullscreen scrolling="no" frameborder="0"></iframe>
+        <a class="ig-link" href="https://www.instagram.com/p/DNso6p8Wpid/" target="_blank" rel="noopener">Watch on Instagram</a>
+      </div>
+      <div class="embed-card reveal">
+        <iframe class="ig-frame" src="https://www.instagram.com/p/DM2r8JVAb-t/embed/" loading="lazy" allowtransparency="true" allowfullscreen scrolling="no" frameborder="0"></iframe>
+        <a class="ig-link" href="https://www.instagram.com/p/DM2r8JVAb-t/" target="_blank" rel="noopener">Watch on Instagram</a>
+      </div>
+    </div>
+
+    <!-- Your own photos: upload them to GitHub named photo1.jpg, photo2.jpg and so on.
+         Any photo you haven't uploaded yet just stays hidden. -->
+    <div class="photos">
+      <figure class="reveal"><img src="photo1.jpg" alt="Travel photo by Nahian Faruk" loading="lazy" onerror="this.parentElement.remove()"></figure>
+      <figure class="reveal"><img src="photo2.jpg" alt="Travel photo by Nahian Faruk" loading="lazy" onerror="this.parentElement.remove()"></figure>
+      <figure class="reveal"><img src="photo3.jpg" alt="Travel photo by Nahian Faruk" loading="lazy" onerror="this.parentElement.remove()"></figure>
+      <figure class="reveal"><img src="photo4.jpg" alt="Travel photo by Nahian Faruk" loading="lazy" onerror="this.parentElement.remove()"></figure>
+      <figure class="reveal"><img src="photo5.jpg" alt="Travel photo by Nahian Faruk" loading="lazy" onerror="this.parentElement.remove()"></figure>
+      <figure class="reveal"><img src="photo6.jpg" alt="Travel photo by Nahian Faruk" loading="lazy" onerror="this.parentElement.remove()"></figure>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="num">03</div>
+      <h2>Follow Along</h2>
+      <p>New films and photos go up on Instagram first.</p>
+      <div class="rule"></div>
+    </div>
+    <a class="btn reveal" href="https://www.instagram.com/nahian_faruk/" target="_blank" rel="noopener">@nahian_faruk</a>
+  </div>
+</section>
+
+<footer>&copy; <span id="year"></span> Nahian Faruk</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
